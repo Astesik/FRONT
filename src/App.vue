@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- Możesz umieścić tutaj globalny header -->
     <header>
       <nav>
         <router-link to="/">Home</router-link>
@@ -9,12 +8,12 @@
       </nav>
     </header>
 
-    <!-- Miejsce, gdzie renderowane będą widoki -->
+
     <main>
       <router-view></router-view>
     </main>
 
-    <!-- Globalna stopka -->
+
     <footer>
       <p>&copy; 2025 Twoja Firma</p>
     </footer>
@@ -28,5 +27,4 @@ export default {
 </script>
 
 <style>
-/* Style globalne dla całej aplikacji */
 </style>

@@ -15,7 +15,7 @@ const routes = [
         component: EmployeePanel,
         meta: {
             requiresAuth: true,
-            roles: ['ROLE_ADMIN', 'ROLE_SERVICE']  // Przykładowe role dozwolone do panelu
+            roles: ['ROLE_ADMIN', 'ROLE_SERVICE']
         }
     },
     {
@@ -30,15 +30,13 @@ const router = createRouter({
     routes
 });
 
-// Globalny router guard
+
 router.beforeEach(async (to, from, next) => {
     if (to.meta.requiresAuth) {
-        // Pobieramy bieżącego użytkownika na podstawie ciasteczka
         const user = await getCurrentUser();
         if (!user) {
             return next({ name: 'Login' });
         }
-        // Jeżeli trasa wymaga określonych ról, sprawdzamy je
         if (to.meta.roles && !to.meta.roles.some(role => user.roles.includes(role))) {
             return next({ name: 'Unauthorized' });
         }

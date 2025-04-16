@@ -29,11 +29,8 @@ export default {
           username: this.username,
           password: this.password
         };
-        // Logowanie – serwer ustawi ciasteczko HTTP Only
         await loginUser(credentials);
-        // Pobieramy dane użytkownika, które będą nam potrzebne do autoryzacji tras
         const user = await getCurrentUser();
-        // Możesz zapisać usera w stanie globalnym (np. Pinia) – tutaj uproszczony przykład z przekierowaniem
         if (user) {
           this.$router.push({ name: 'EmployeePanel' });
         } else {
