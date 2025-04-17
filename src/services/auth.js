@@ -1,20 +1,20 @@
 // src/services/auth.js
 import axios from 'axios';
 
-// Konfigurujemy axios do wysyłania ciasteczek
+
 axios.defaults.withCredentials = true;
 
 export async function loginUser(credentials) {
-    // Po poprawnym logowaniu serwer ustawi ciasteczko HTTP Only
+
     const response = await axios.post('http://localhost:8080/api/auth/signin', credentials);
-    // Odpowiedź zawiera również dane użytkownika – opcjonalnie możesz je zwrócić
+
     console.log(response.data);
     return response.data;
 }
 
 export async function getCurrentUser() {
     try {
-        // Żądanie do endpointa, który odczytuje ciasteczko i zwraca dane użytkownika
+
         const response = await axios.get('http://localhost:8080/api/auth/current-user');
         console.log(response.data);
         return response.data;
@@ -25,6 +25,12 @@ export async function getCurrentUser() {
 }
 
 export async function logoutUser() {
-    // Wylogowywanie – serwer powinien usunąć ciasteczko
-    await axios.post('http://localhost:8080/api/auth/logout');
+    try {
+        await fetch('http://localhost:8080/api/auth/logout', {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Błąd przy wylogowaniu:', error);
+    }
 }

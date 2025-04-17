@@ -32,8 +32,13 @@ const router = createRouter({
 
 
 router.beforeEach(async (to, from, next) => {
+    const user = await getCurrentUser();
+
+    if (to.name === 'Login' && user) {
+        return next({ name: 'Home' });
+    }
+
     if (to.meta.requiresAuth) {
-        const user = await getCurrentUser();
         if (!user) {
             return next({ name: 'Login' });
         }
