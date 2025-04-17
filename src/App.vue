@@ -1,44 +1,65 @@
-<template>
-  <div id="app">
-    <header>
-      <nav>
-        <router-link to="/">Home</router-link>
-        <router-link to="/employee-panel">Panel Pracowników</router-link>
-        <router-link to="/login">Logowanie</router-link>
-        <button @click="logout">Wyloguj</button>
-      </nav>
-    </header>
-
-
-    <main>
-      <router-view></router-view>
-    </main>
-
-
-    <footer>
-      <p>&copy; 2025 Twoja Firma</p>
-    </footer>
-  </div>
-</template>
-
-<script>
-import { logoutUser } from '@/services/auth.js';
+<script setup>
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+import { getCurrentUser, logoutUser } from '@/services/auth';
+import { useUserStore } from '@/stores/user';
 
-export default {
-  setup() {
-    const router = useRouter();
 
-    const logout = async () => {
-      await logoutUser();
+const router = useRouter();
+const userStore = useUserStore();
 
-      await router.push('/login');
-    };
-
-    return { logout };
+onMounted(async () => {
+  const user = await getCurrentUser();
+  if (user) {
+    userStore.setUser(user);
   }
+});
+
+const logout = async () => {
+  await logoutUser();
+  userStore.clearUser();
+  router.push('/login');
 };
 </script>
 
-<style>
-</style>
+<template>
+  <div id="app" class="flex flex-col min-h-screen font-sans bg-gray-50 text-gray-900">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+      <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex space-x-4">
+          <router-link to="/" class="text-lg font-semibold hover:text-blue-600 transition">Home</router-link>
+          <router-link
+              v-if="userStore.isAdmin"
+              to="/employee-panel"
+              class="text-lg font-semibold hover:text-blue-600 transition"
+          >Panel Pracowników</router-link>
+        </div>
+
+        <div>
+          <router-link
+              v-if="!userStore.isLoggedIn"
+              to="/login"
+              class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition"
+          >Zaloguj się</router-link>
+
+          <button
+              v-else
+              @click="logout"
+              class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition"
+          >Wyloguj</button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main class="flex-grow container mx-auto px-4 py-10">
+      <router-view />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 py-4 text-center text-sm text-gray-600">
+      &copy; 2025 Twoja Firma. Wszelkie prawa zastrzeżone.
+    </footer>
+  </div>
+</template>
