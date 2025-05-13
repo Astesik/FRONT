@@ -25,7 +25,7 @@ const logout = async () => {
 <template>
   <div id="app" class="flex flex-col min-h-screen font-sans bg-gray-50 text-gray-900">
     <!-- Header -->
-    <header class="bg-white shadow-md">
+    <header class="bg-white shadow-md" style="z-index: 1000">
       <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
         <div class="flex space-x-4">
           <router-link to="/" class="text-lg font-semibold hover:text-blue-600 transition">Home</router-link>
@@ -53,13 +53,9 @@ const logout = async () => {
     </header>
 
     <!-- Main content -->
-    <main class="flex-grow container mx-auto px-4 py-10">
+    <main class="flex-grow container relative">
       <router-view />
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-100 py-4 text-center text-sm text-gray-600">
-      &copy; 2025 Twoja Firma. Wszelkie prawa zastrzeżone.
-    </footer>
   </div>
 </template>

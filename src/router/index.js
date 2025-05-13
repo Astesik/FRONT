@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import EmployeePanel from '../views/EmployeePanel.vue';
+import DeviceAdmin from '../views/DeviceAdmin.vue';
 import Unauthorized from '../views/Unauthorized.vue';
 import { getCurrentUser } from '../services/auth';
 
@@ -17,6 +18,15 @@ const routes = [
             requiresAuth: true,
             roles: ['ROLE_ADMIN', 'ROLE_SERVICE']
         }
+    },
+    {
+      path: '/devices',
+      name: 'Devices',
+      component: DeviceAdmin,
+      meta: {
+          requiresAuth: true,
+          roles: ['ROLE_ADMIN']
+      }
     },
     {
         path: '/unauthorized',
